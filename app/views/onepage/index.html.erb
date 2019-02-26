@@ -2,7 +2,7 @@
 <p>Find me in app/views/onepage/index.html.erb</p> %>
 
 <% if client_signed_in? %>
-<%= link_to 'Company', companies_path %>
+<%= link_to 'Company', profile_path %>
 <% else %>
 <%= link_to 'Company', new_client_session_url %>
 <% end %>
@@ -12,4 +12,3 @@
 <% else %>
 <%= link_to 'User', new_student_session_url %>
 <% end %>
-

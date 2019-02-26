@@ -1,6 +1,8 @@
 class CompaniesController < ApplicationController
+  protect_from_forgery unless: -> { request.format.json? }
   before_action :authenticate_client!, :except => [ :show, :index ]
   before_action :set_company, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /companies
   # GET /companies.json

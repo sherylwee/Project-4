@@ -11,13 +11,15 @@ class Newcompany extends React.Component {
         this.newLocation = this.newLocation.bind(this);
         this.newDescription = this.newDescription.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.refreshPage = this.refreshPage.bind(this);
         this.state = {
             name: "",
             contact: "",
             location: "",
             description: "",
             company: [],
-            redirect: false
+            redirect: false,
+            refresh: []
         };
     }
 
@@ -43,9 +45,14 @@ class Newcompany extends React.Component {
         console.log(e.target.value)
     }
 
+    refreshPage() {
+        this.setState({ redirect: true })
+        window.location.reload();
+    }
+
 
     handleSubmit(e) {
-        
+
         e.preventDefault();
         console.log('hey')
         var reactThis = this;
@@ -75,17 +82,19 @@ class Newcompany extends React.Component {
                     }
                 })
                     .then(function (response) {
-                        return response.json()
+                        return response.json();
                     })
                     .then(function (data) {
                         console.log(data)
-                        reactThis.setState({ company: data, redirect: true })
+                        reactThis.setState({ company: data, redirect: true, refresh: reactThis.refreshPage() })
                     })
             })
             .catch(function (error) {
                 console.log('request failed', error);
                 reactThis.setState({ redirect: false })
             })
+
+
     }
 
 

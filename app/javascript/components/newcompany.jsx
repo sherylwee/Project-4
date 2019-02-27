@@ -100,7 +100,6 @@ class Newcompany extends React.Component {
 
 
 
-
     render() {
 
         if (this.state.redirect) {
@@ -108,19 +107,9 @@ class Newcompany extends React.Component {
         }
 
 
-        const names = this.state.company.map((test, index) => {
-            return <div key={index}>
-                <h1>{test.name}</h1>
-                <p>{test.contact}</p>
-                <p>{test.location}</p>
-                <p>{test.description}</p>
-                <button onClick={this.deleteHandler}>Delete</button>
-            </div>
-        })
-
+        
         return (
             <div>
-                {names}
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <p>Name <input type="text" value={this.state.newName} onChange={this.newName} /></p>

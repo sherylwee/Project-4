@@ -1,14 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types'
-import Newitems from './newitems'
-import Newcompany from './newcompany'
+import React from "react";
+import PropTypes from "prop-types";
+import Newitems from "./newitems";
+import Newcompany from "./newcompany";
+import Edit from "./edit";
+import Logo from "../../assets/images/logo";
 
-import { Route, Link, HashRouter as Router, Switch, NavLink } from "react-router-dom";
-import 'whatwg-fetch'
+import {
+  Header,
+  Icon,
+  Button,
+  Container,
+  Image,
+  Menu
+} from "semantic-ui-react";
+
+import { Route, HashRouter as Router, Switch, NavLink } from "react-router-dom";
+
+import "whatwg-fetch";
 
 class App extends React.Component {
   constructor() {
     super();
+    // this.editHandler = this.editHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
     this.state = {
       company: [],
@@ -17,125 +30,228 @@ class App extends React.Component {
       contact: "",
       location: "",
       description: "",
-      id: ""
+      redirect: false
     };
   }
 
+  refreshPage() {
+    this.setState({ redirect: true });
+    window.location.reload();
+  }
+
+  // editHandler(e) {
+  //   e.preventDefault();
+  //   console.log(e.target.dataset.id)
+  //   var reactThis = this;
+
+  //   fetch(`/companies/${e.target.dataset.id}`, {
+  //     method: 'put',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       name: this.state.name,
+  //       contact: this.state.contact,
+  //       location: this.state.location,
+  //       description: this.state.description,
+  //     })
+
+  //   })
+
+  //     .then(function (data) {
+  //       console.log('post req', data);
+  //       fetch('/companies', {
+  //         method: 'get',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Accept': 'application/json'
+  //         }
+  //       })
+
+  //     })
+
+  //     .catch(function (error) {
+  //       console.log('request failed', error);
+  //       // reactThis.setState({ redirect: false })
+  //     })
+
+  // }
 
   deleteHandler(e) {
     var reactThis = this;
-console.log("deleting")
+    // console.log("deleting")
     fetch(`/companies/${e.target.dataset.id}`, {
-      method: 'delete',
-
+      method: "delete"
     })
-      .then(function (response) {
-        console.log("delete")
+      .then(function(response) {
+        console.log("delete");
 
-        fetch('/companies', {
-          method: 'get',
+        fetch("/companies", {
+          method: "get",
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            "Content-Type": "application/json",
+            Accept: "application/json"
           }
         })
-          .then(function (response) {
-            reactThis.setState({ loadData: true })
+          .then(function(response) {
+            reactThis.setState({ loadData: true });
             return response.json();
           })
-          .then(function (data) {
-            console.log(data)
-            reactThis.setState({ company: data, loadData: false })
-          })
-        return response.json()
+          .then(function(data) {
+            console.log(data);
+            reactThis.setState({ company: data, loadData: false });
+          });
+        return response.json();
       })
-      .catch(function (error) {
-        console.log(error)
-      })
-
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   componentDidMount() {
-
     var reactThis = this;
 
-    fetch('/companies', {
-      method: 'get',
+    fetch("/companies", {
+      method: "get",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json"
       }
     })
-      .then(function (response) {
-        reactThis.setState({ loadData: true })
+      .then(function(response) {
+        reactThis.setState({ loadData: true });
         return response.json();
       })
-      .then(function (data) {
-        console.log(data)
-        reactThis.setState({ company: data, loadData: false })
-      })
-
-
+      .then(function(data) {
+        console.log(data);
+        reactThis.setState({ company: data, loadData: false });
+      });
   }
-
 
   render() {
     const names = this.state.company.map((test, index) => {
       // console.log(test)
       return (
+        <div key={index}>
+          <Header as="h2">
+            <Icon
+              name="building"
+              style={{ fontSize: "1em", color: "#444444" }}
+            />
+            <Header.Content>{test.name}</Header.Content>
+          </Header>
 
-        <div key={index} >
-          <h1>{test.name}</h1>
-          <p>{test.contact}</p>
-          <p>{test.location}</p>
-          <p>{test.description}</p>
-          <button data-id={test.id} onClick={this.deleteHandler}>Delete</button>
+          <p>
+            <Icon name="phone" style={{color: '#444444', marginRight: '15px'}} />
+            {test.contact}
+          </p>
+          <p>
+            <Icon name="location arrow" style={{color: '#444444', marginRight: '15px'}} />
+            {test.location}
+          </p>
+          <p>
+            <Icon name="list ul" style={{color: '#444444', marginRight: '15px'}} />
+            {test.description}
+          </p>
+          <Button
+            basic
+            color="orange"
+            animated="fade"
+            as={NavLink}
+            to={"/newitems"}
+          >
+            <Button.Content visible>New items</Button.Content>
+            <Button.Content hidden>
+              <Icon name="camera retro" />
+            </Button.Content>
+          </Button>
 
+          <Button
+            basic
+            color="orange"
+            animated="fade"
+            as={NavLink}
+            to={"/useraccept"}
+          >
+            <Button.Content visible>Users to accept</Button.Content>
+            <Button.Content hidden>
+              <Icon name="check circle outline" />
+            </Button.Content>
+          </Button>
 
+          <Button
+            basic
+            color="orange"
+            animated="fade"
+            as={NavLink}
+            to={"/edit"}
+            data-id={test.id}
+          >
+            <Button.Content visible>Edit</Button.Content>
+            <Button.Content hidden>
+              <Icon name="edit" />
+            </Button.Content>
+          </Button>
+
+          <Button
+            basic
+            color="orange"
+            animated="fade"
+            as={NavLink}
+            to={"/delete"}
+            data-id={test.id}
+            onClick={this.deleteHandler}
+          >
+            <Button.Content visible>Delete</Button.Content>
+            <Button.Content hidden>
+              <Icon name="trash alternate" />
+            </Button.Content>
+          </Button>
+
+          <Menu fixed="top" style={{ backgroundColor: "#eca400" }}>
+            <Container>
+              <Menu.Item as="a" header>
+                <Image
+                  // size="small"
+                  width={115}
+                  src={Logo}
+                  style={{ marginRight: "1.5em" }}
+                  // as={NavLink}
+                  // to={"/profile"}
+                />
+              </Menu.Item>
+              <Menu.Item as={NavLink} to={"/new"} style={{ color: "white"}}>
+                New company
+              </Menu.Item>
+            </Container>
+          </Menu>
         </div>
-      )
-    })
+      );
+    });
 
     return (
-      <div>
-        <nav>
-          {names}
-          <Link to="/newitems">New items </Link>
-          <Link to="/useraccept">Users to accept </Link>
-          <Link to="/new">New company </Link>
-       
-        </nav>
+      <div style={{ marginTop: "80px", marginLeft: "80px" }}>
+        {names}
+
         <main>
           <Switch>
-            {/* <Route exact path="/new" component={Company} />
-            <Route path="/profile" conponent={Newcompany} /> */}
-
-            <Route path="/new" render={() => <Newcompany refreshPage={this.refreshPage} />} />
+            {/* <Route path="/profile"/> */}
+            <Route
+              path="/new"
+              render={() => <Newcompany refreshPage={this.refreshPage} />}
+            />
+            {/* <Route path="/edit" render={() => <Edit editHandler={this.editHandler} />} /> */}
           </Switch>
-          <Route
-            path='/newitems'
-            render={() => (
-              <Newitems />
-            )}
-          />
-          <Route
-            path='/useraccept'
-            render={() => (
-              <Useraccept />
-            )}
-          // />
-          // <Route
-          //   path='/newcompany'
-          //   render={() => (
-          //     <Newcompany />
-          //   )}
-          />
+
+          <Route path="/edit" render={() => <Edit />} />
+
+          <Route path="/newitems" render={() => <Newitems />} />
+          <Route path="/useraccept" render={() => <Useraccept />} />
         </main>
       </div>
-    )
+    );
   }
-
 }
 
-
-export default App
+export default App;

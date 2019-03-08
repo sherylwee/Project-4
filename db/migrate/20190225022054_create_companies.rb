@@ -6,6 +6,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :location
       t.text :description
       t.references :client
+      t.references :item
 
       t.timestamps
     end

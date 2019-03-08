@@ -107,8 +107,26 @@ class Newcompany extends React.Component {
         }
 
 
-        
+
         return (
+
+            // <form class="ui form" onSubmit={this.handleSubmit}>
+            //     <div class="field" style="padding-top:100px;">
+            //         <label>Name</label>
+            //         <input type="text" name="first-name" placeholder="First Name" value={this.state.newName} onChange={this.newName} />
+            //     </div>
+            //     <div class="field">
+            //         <label>Last Name</label>
+            //         <input type="text" name="last-name" placeholder="Last Name" />
+            //     </div>
+            //     <div class="field">
+            //         <div class="ui checkbox">
+            //             <input type="checkbox" tabindex="0" class="hidden" />
+            //             <label>I agree to the Terms and Conditions</label>
+            //         </div>
+            //     </div>
+            //     <button class="ui button" type="submit">Submit</button>
+            // </form>
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
@@ -120,7 +138,8 @@ class Newcompany extends React.Component {
                     <input type="submit" value="Submit" />
 
                 </form>
-            </div >);
+            </div >
+        );
     }
 }
 

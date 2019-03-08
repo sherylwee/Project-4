@@ -33,9 +33,11 @@ ActiveRecord::Schema.define(version: 2019_02_27_010847) do
     t.string "location"
     t.text "description"
     t.bigint "client_id"
+    t.bigint "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_companies_on_client_id"
+    t.index ["item_id"], name: "index_companies_on_item_id"
   end
 
   create_table "companies_users", force: :cascade do |t|
@@ -49,10 +51,12 @@ ActiveRecord::Schema.define(version: 2019_02_27_010847) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.text "picture"
+    t.string "picture"
     t.text "description"
+    t.bigint "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_items_on_client_id"
   end
 
   create_table "items_users", force: :cascade do |t|

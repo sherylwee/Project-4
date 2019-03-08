@@ -18,6 +18,7 @@ class CompaniesController < ApplicationController
   # GET /companies/new
   def new
     @company = Company.new
+    @items = Item.all
   end
 
   # GET /companies/1/edit
@@ -29,6 +30,7 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     @company.client_id = current_client.id
+    @company.item_id = @current_client.id
 
     respond_to do |format|
       if @company.save
@@ -73,6 +75,6 @@ class CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :contact, :location, :description, :references)
+      params.require(:company).permit(:name, :contact, :location, :description, :references, :item_id)
     end
 end

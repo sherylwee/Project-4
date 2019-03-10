@@ -4,6 +4,7 @@ import Newitems from "./newitems";
 import Newcompany from "./newcompany";
 import Edit from "./edit";
 import Logo from "../../assets/images/logo";
+import Companyitems from "./companyitems";
 
 import {
   Header,
@@ -17,12 +18,14 @@ import {
 import { Route, HashRouter as Router, Switch, NavLink } from "react-router-dom";
 
 import "whatwg-fetch";
+import { CloudinaryContext } from "cloudinary-react";
 
 class App extends React.Component {
   constructor() {
     super();
     // this.editHandler = this.editHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.companyHandler = this.companyHandler.bind(this);
     this.state = {
       company: [],
       loadData: false,
@@ -30,7 +33,8 @@ class App extends React.Component {
       contact: "",
       location: "",
       description: "",
-      redirect: false
+      redirect: false,
+      companyItems: []
     };
   }
 
@@ -79,6 +83,7 @@ class App extends React.Component {
   // }
 
   deleteHandler(e) {
+    console.log(e.target.dataset.id);
     var reactThis = this;
     // console.log("deleting")
     fetch(`/companies/${e.target.dataset.id}`, {
@@ -129,29 +134,56 @@ class App extends React.Component {
       });
   }
 
+  companyHandler(e) {
+
+    var reactThis = this;
+    console.log(e.target)
+
+    fetch("/items", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json", 
+        Accept: "application/json"
+      }
+    })
+    .then(function(data) {
+      console.log(data)
+      reactThis.setState({companyItems: data})
+    })
+  }
+
   render() {
     const names = this.state.company.map((test, index) => {
-      // console.log(test)
       return (
         <div key={index}>
+          <p />
           <Header as="h2">
             <Icon
               name="building"
-              style={{ fontSize: "1em", color: "#444444" }}
+              style={{ fontSize: "0.8em", color: "#444444" }}
             />
             <Header.Content>{test.name}</Header.Content>
           </Header>
 
           <p>
-            <Icon name="phone" style={{color: '#444444', marginRight: '15px'}} />
+            <Icon
+              name="phone"
+              style={{ color: "#444444", marginRight: "18px" }}
+            />
             {test.contact}
           </p>
           <p>
-            <Icon name="location arrow" style={{color: '#444444', marginRight: '15px'}} />
+            <Icon
+              name="location arrow"
+              style={{ color: "#444444", marginRight: "18px" }}
+            />
             {test.location}
           </p>
           <p>
-            <Icon name="list ul" style={{color: '#444444', marginRight: '15px'}} />
+            <Icon
+              name="list ul"
+              style={{ color: "#444444", marginRight: "18px" }}
+            />
             {test.description}
           </p>
           <Button
@@ -209,6 +241,23 @@ class App extends React.Component {
             </Button.Content>
           </Button>
 
+          <Button 
+            basic
+            color="orange" 
+            animated="fade"
+            as={NavLink}
+            to={"/existingitems"}
+            onClick={this.companyHandler}
+          >
+          
+            <Button.Content visible>Existing Items</Button.Content>
+            <Button.Content hidden>
+              <Icon name="camera"/>
+            </Button.Content>
+
+          </Button>
+          
+
           <Menu fixed="top" style={{ backgroundColor: "#eca400" }}>
             <Container>
               <Menu.Item as="a" header>
@@ -221,18 +270,28 @@ class App extends React.Component {
                   // to={"/profile"}
                 />
               </Menu.Item>
-              <Menu.Item as={NavLink} to={"/new"} style={{ color: "white"}}>
+              <Menu.Item as={NavLink} to={"/new"} style={{ color: "white" }}>
                 New company
               </Menu.Item>
             </Container>
           </Menu>
+
+          <Switch><Route path="/existingitems" render={() => <Companyitems/>} /></Switch>
+
+          
         </div>
       );
     });
+        
+        
+      // console.log(test)
+      
+    
 
     return (
       <div style={{ marginTop: "80px", marginLeft: "80px" }}>
         {names}
+        
 
         <main>
           <Switch>
@@ -241,9 +300,11 @@ class App extends React.Component {
               path="/new"
               render={() => <Newcompany refreshPage={this.refreshPage} />}
             />
+            
+
             {/* <Route path="/edit" render={() => <Edit editHandler={this.editHandler} />} /> */}
           </Switch>
-
+          
           <Route path="/edit" render={() => <Edit />} />
 
           <Route path="/newitems" render={() => <Newitems />} />

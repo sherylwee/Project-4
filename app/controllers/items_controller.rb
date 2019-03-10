@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-    @item = current_client.id
+    # @item.company_id = @company.id
 
     respond_to do |format|
       if @item.save
@@ -70,6 +70,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:name, :picture, :description)
+      params.require(:item).permit(:name, :picture, :description, :company_id)
     end
 end

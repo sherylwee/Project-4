@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter, Redirect } from 'react-router-dom';
+import { Input, Button } from 'semantic-ui-react';
 import 'whatwg-fetch';
 
 
@@ -109,33 +110,16 @@ class Newcompany extends React.Component {
 
 
         return (
-
-            // <form class="ui form" onSubmit={this.handleSubmit}>
-            //     <div class="field" style="padding-top:100px;">
-            //         <label>Name</label>
-            //         <input type="text" name="first-name" placeholder="First Name" value={this.state.newName} onChange={this.newName} />
-            //     </div>
-            //     <div class="field">
-            //         <label>Last Name</label>
-            //         <input type="text" name="last-name" placeholder="Last Name" />
-            //     </div>
-            //     <div class="field">
-            //         <div class="ui checkbox">
-            //             <input type="checkbox" tabindex="0" class="hidden" />
-            //             <label>I agree to the Terms and Conditions</label>
-            //         </div>
-            //     </div>
-            //     <button class="ui button" type="submit">Submit</button>
-            // </form>
             <div>
+                <br/><h3>Create a new company</h3>
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        <p>Name <input type="text" value={this.state.newName} onChange={this.newName} /></p>
-                        <p>Contact <input type="number" value={this.state.newContact} onChange={this.newContact} /></p>
-                        <p>Location <input type="text" value={this.state.newLocation} onChange={this.newLocation} /></p>
-                        <p>Description <textarea value={this.state.newDescription} onChange={this.newDescription} /></p>
+                        <Input icon="building" iconPosition='left' placeholder='Name' value={this.state.newName} onChange={this.newName}/>
+                        <p/><Input icon="phone" iconPosition='left' placeholder='Contact' type='number' value={this.state.newContact} onChange={this.newContact}/>
+                        <p/><Input icon="location arrow" iconPosition='left' placeholder='Location' value={this.state.newLocation} onChange={this.newLocation}/>
+                        <p/><Input icon="list ul" iconPosition='left' placeholder='Description' value={this.state.newDescription} onChange={this.newDescription}/><p/>
                     </label>
-                    <input type="submit" value="Submit" />
+                    <p/><Button color='orange' value='Submit' content='Submit'/>
 
                 </form>
             </div >

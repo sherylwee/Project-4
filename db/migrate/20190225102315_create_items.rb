@@ -4,7 +4,7 @@ class CreateItems < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :picture
       t.text :description
-      t.references :client
+      t.references :company
 
       t.timestamps
     end

@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(version: 2019_02_27_010847) do
     t.string "name"
     t.string "picture"
     t.text "description"
-    t.bigint "client_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_items_on_client_id"
+    t.index ["company_id"], name: "index_items_on_company_id"
   end
 
   create_table "items_users", force: :cascade do |t|
